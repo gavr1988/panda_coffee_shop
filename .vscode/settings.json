@@ -1,0 +1,7 @@
+{
+  // Disable VS Code built-in inline suggestions for this workspace
+  "editor.inlineSuggest.enabled": false,
+
+  // If GitHub Copilot is installed, disable its inline suggestions for this workspace
+  "github.copilot.inlineSuggest.enable": false
+}
