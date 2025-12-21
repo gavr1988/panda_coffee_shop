@@ -95,3 +95,13 @@ print ('Day over Day Growth')
 growth = daily_revenue - daily_revenue.shift(1)
 
 print (growth)
+
+#using lambda function
+
+print (df)
+
+print ('adding category column')
+
+df['Category'] = df['Revenue'].apply(lambda x: 'High' if x> 10 else 'Std')
+
+print (df)
