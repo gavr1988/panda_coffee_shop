@@ -27,6 +27,8 @@ df['Price'].fillna(value=avg_price, inplace=True)
 
 print (df)
 
+#renaming the columns
+
 print ('renaming the Qty column to Quantity')
 
 df.rename(columns={'Qty':'Quantity'}, inplace = True)
@@ -53,6 +55,43 @@ print ('finding the lowest value Orders')
 
 print (df.query ('Revenue <=5'))
 
+#topic13 and 14
 
+#Using the group by function
 
+print("Barista performance")
 
+# select multiple columns with a list of column names, not a tuple
+barista_performance = df.groupby('Barista')[["Revenue", "Quantity"]].sum()
+
+print(barista_performance)
+
+#specific sales data for individual items in a pivot table
+
+print ('Sales Matrix (Item vs Barista):')
+
+sales_matrix = df.pivot_table (index = 'Item', columns = 'Barista', values = 'Revenue', aggfunc = 'sum', fill_value = 0)
+
+print (sales_matrix)
+
+print ("\n")
+
+#resampling to Daily Totals
+
+print ("resampling to daily totals")
+
+daily_revenue = df['Revenue'].resample('D').sum()
+print("Daily Revenue:")
+print (daily_revenue)
+
+#getting a two day average
+
+print ("2 day average")
+
+print (daily_revenue.rolling (window = 2).mean())
+
+print ('Day over Day Growth')
+
+growth = daily_revenue - daily_revenue.shift(1)
+
+print (growth)
