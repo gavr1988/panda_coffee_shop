@@ -103,7 +103,7 @@ new_data = {
     'Item': ['Latte', 'Muffin'],
     'Price': [4.50, 4.10],
     'Quantity': [2, 1],
-    'Barista': ['Alice', 'Bob'],
+    'Barista': ['Gavan', 'Albie'],
     'Revenue': [9.00, 4.10]
 }
 
@@ -131,33 +131,31 @@ print (full_history)
 print ('========Merging Cost data===============')
 
 #create new data frame df_costs
+# 1. Create the cost data frame
 cost_data = {
     'Item': ['Latte', 'Espresso', 'Muffin', 'Cappuccino'],
     'Cost': [1.50, 0.80, 1.00, 1.20]
 }
-df_costs = pd.DataFrame (cost_data)
-print ('Cost table')
-print (df_costs)
+df_costs = pd.DataFrame(cost_data)
 
-#resetting the index
-
+# 2. Reset the index of full_history
+# This moves 'Date' from the index back into a normal column
 full_history_reset = full_history.reset_index()
 
-df_with_costs = pd.merge(full_history_reset, df_costs, on='Item',how = 'left')
-#on looks in the cost table and matches it with the cost that is newly generated
-print ('Data Frame With costs after merging costs')
+# 3. Clean the 'Item' column strings
+# We use .str.strip() to remove any accidental leading/trailing spaces
+full_history_reset['Item'] = full_history_reset['Item'].str.strip()
+df_costs['Item'] = df_costs['Item'].str.strip()
 
-print (df_with_costs)
+# 4. Merge the two DataFrames
+# This joins the cost information to every transaction based on the 'Item' name
+df_with_costs = pd.merge(full_history_reset, df_costs, on='Item', how='left')
 
+print('Data Frame With costs after merging costs:')
+print(df_with_costs)
 
+# 5. Final Lambda Categorization on the merged data
+df_with_costs['Category'] = df_with_costs['Revenue'].apply(lambda x: 'High' if x > 10 else 'Std')
 
-#using lambda function
-
-print (df)
-
-print ('adding category column')
-
-df['Category'] = df['Revenue'].apply(lambda x: 'High' if x> 10 else 'Std')
-
-print (df)
-
+print('\nFinal Categorized Data:')
+print(df_with_costs[['Date', 'Item', 'Barista', 'Revenue', 'Cost', 'Category']])
